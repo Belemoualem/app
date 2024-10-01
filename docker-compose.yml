@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+
+  mongo:
+    image: mongo:6
+    container_name: mongo_dbad
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  fastapi:
+    build: .
+    container_name: fastapi_microservicee
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+    volumes:
+      - .:/app
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/bookstore
+
+volumes:
+  mongo_data:
